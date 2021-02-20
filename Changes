@@ -1,3 +1,15 @@
+0.010   2021-02-20  Released-By: PERLANCAR; Urgency: low
+
+        - No functional changes.
+
+	- [doc] Tweak description.
+
+        - [doc] Mention Text::ANSITable.
+
+	- [doc] Remove sample output of UTF border in Synopsis for now (encoding
+	  problem).
+
+
 0.009   2021-02-20  Released-By: PERLANCAR; Urgency: medium
 
         - Rename module from Text::Table::Span to Text::Table::More.
