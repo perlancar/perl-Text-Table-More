@@ -570,8 +570,9 @@ If you set the C<border_style> argument to C<"UTF8::SingleLineBoldHeader">:
 
 =head1 DESCRIPTION
 
-This module is like L<Text::Table::Tiny> (0.04) with added support for
-column/row spans, and border style.
+This module uses the simple interface like L<Text::Table::Tiny> (0.04) with
+support for more formatting options, most notably column/row spans, border
+style, per-row/column/cell align/valign, and so on.
 
 
 =head1 FUNCTIONS
@@ -729,6 +730,12 @@ Positive integer. Default 1.
 
 
 =head1 SEE ALSO
+
+L<Text::ANSITable> also offers lots of formatting options, but currently lacks
+support for rowspan/colspan. It also uses an OO interface and has features I
+never use: hiding rows and selecting display columns different from declared
+columns. I currently plan to actively develop Text::Table::More instead of
+Text::ANSITable, but we'll see.
 
 L<Acme::CPANModules::TextTable> contains a comparison and benchmark for modules
 that generate text table.
