@@ -7,7 +7,7 @@ use warnings;
 use Test::More 0.98;
 #use Test::Differences;
 
-use Text::Table::Span qw(generate_table);
+use Text::Table::More qw(generate_table);
 
 #binmode STDOUT, ":encoding(UTF-8)";
 #binmode STDERR, ":encoding(UTF-8)";

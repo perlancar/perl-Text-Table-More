@@ -8,6 +8,7 @@ package Text::Table::More;
 use 5.010001;
 use strict;
 use warnings;
+#use utf8;
 
 use List::AllUtils qw(first firstidx max);
 
@@ -556,7 +557,7 @@ sub generate_table {
 
 will output something like:
 
-# CODE: perl share/examples/emmy.pl
+# COMMAND: perl -Ilib share/examples/emmy.pl
 
 If you set the C<border_style> argument to C<"UTF8::SingleLineBoldHeader">:
 
@@ -568,7 +569,7 @@ If you set the C<border_style> argument to C<"UTF8::SingleLineBoldHeader">:
 
 then the output will be something like this:
 
-# CODE: perl share/examples/emmy.pl UTF8::SingleLineBoldHeader
+# COMMAND: perl -Ilib share/examples/emmy.pl UTF8::SingleLineBoldHeader
 
 
 =head1 DESCRIPTION
