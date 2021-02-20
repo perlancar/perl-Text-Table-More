@@ -567,10 +567,6 @@ If you set the C<border_style> argument to C<"UTF8::SingleLineBoldHeader">:
      ...
  );
 
-then the output will be something like this:
-
-# COMMAND: perl -Ilib share/examples/emmy.pl UTF8::SingleLineBoldHeader
-
 
 =head1 DESCRIPTION
 
