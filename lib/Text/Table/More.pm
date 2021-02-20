@@ -570,9 +570,11 @@ If you set the C<border_style> argument to C<"UTF8::SingleLineBoldHeader">:
 
 =head1 DESCRIPTION
 
-This module uses the simple interface like L<Text::Table::Tiny> (0.04) with
-support for more formatting options, most notably column/row spans, border
-style, per-row/column/cell align/valign, and so on.
+This module uses the simple interface of L<Text::Table::Tiny> (0.04) with
+support for more formatting options like column/row spans, border style,
+per-row/column/cell align/valign.
+
+Keywords: rowspan, colspan.
 
 
 =head1 FUNCTIONS
