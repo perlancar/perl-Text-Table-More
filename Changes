@@ -1,3 +1,13 @@
+0.011   2021-02-21  Released-By: PERLANCAR; Urgency: low
+
+	- No functional changes.
+
+	- [doc] Re-add Unicode sample output after fixing dzil plugin
+	  InsertCommandOutput.
+
+	- [doc] Revise wording in Description.
+
+
 0.010   2021-02-20  Released-By: PERLANCAR; Urgency: low
 
         - No functional changes.
