@@ -10,6 +10,43 @@ use strict;
 use warnings;
 #use utf8;
 
+our %FEATURES = (
+    features => {
+        TextTable => {
+            can_align_cell_containing_wide_character => 1,
+            can_align_cell_containing_color_code     => 1,
+            can_align_cell_containing_newline        => 1,
+            can_use_box_character                    => 1,
+            can_customize_border                     => 1,
+            can_halign                               => 1,
+            can_halign_individual_row                => 1,
+            can_halign_individual_column             => 1,
+            can_halign_individual_cell               => 1,
+            can_valign                               => 1,
+            can_valign_individual_row                => 1,
+            can_valign_individual_column             => 1,
+            can_valign_individual_cell               => 1,
+            can_rowspan                              => 1,
+            can_colspan                              => 1,
+            can_color                                => 0,
+            can_color_theme                          => 0,
+            can_set_cell_height                      => 0,
+            can_set_cell_height_of_individual_row    => 0,
+            can_set_cell_width                       => 0,
+            can_set_cell_width_of_individual_column  => 0,
+            speed                                    => 'slow',
+            can_hpad                                 => 0,
+            can_hpad_individual_row                  => 0,
+            can_hpad_individual_column               => 0,
+            can_hpad_individual_cell                 => 0,
+            can_vpad                                 => 0,
+            can_vpad_individual_row                  => 0,
+            can_vpad_individual_column               => 0,
+            can_vpad_individual_cell                 => 0,
+        },
+    },
+);
+
 use List::AllUtils qw(first firstidx max);
 
 use Exporter qw(import);
