@@ -297,6 +297,7 @@ sub generate_table {
 
                 my @widths;
                 my @heights;
+              ROW:
                 for my $ir (1..$rowspan) {
                     for my $ic (1..$colspan) {
                         my $exptable_cell;
@@ -313,10 +314,15 @@ sub generate_table {
                         #use DDC; dd $exptable; say ''; # debug
                     }
 
-                    my $val;
-                    $val = _get_attr('bottom_border', $rownum+$ir-1, undef, undef, \%args); $exptable_bottom_borders->[$rownum+$ir-1] = $val if $val;
-                    $val = _get_attr('top_border'   , $rownum+$ir-1, undef, undef, \%args); $exptable_bottom_borders->[$rownum+$ir-2] = $val if $val;
-                    $exptable_bottom_borders->[0] = 1 if $rownum+$ir-1 == 0 && $args{header_row};
+                    # determine whether we should draw bottom border of each row
+                    if ($rownum+$ir-1 == 0 && $args{header_row}) {
+                        $exptable_bottom_borders->[0] = 1
+                    } else {
+                        my $val;
+                        $val = _get_attr('bottom_border', $rownum+$ir-1, 0, $cell, \%args); do { $exptable_bottom_borders->[$rownum+$ir-1] = $val if $; next ROW }
+                        $val = _get_attr('top_border'   , $rownum+$ir-1, 0, $cell, \%args); do { $exptable_bottom_borders->[$rownum+$ir-2] = $val; next ROW }
+                        $val = _get_attr('bottom_border', $rownum+$ir-1, undef, undef, \%args); do { $exptable_bottom_borders->[$rownum+$ir-1] = $val; next ROW } if $val;
+                        $val = _get_attr('top_border'   , $rownum+$ir-1, undef, undef, \%args); do { $exptable_bottom_borders->[$rownum+$ir-2] = $val; next ROW } if $val;
 
                     $M = $rownum+$ir if $M < $rownum+$ir;
                 }
@@ -770,6 +776,15 @@ Positive integer. Default 1.
 =head2 rowspan
 
 Positive integer. Default 1.
+
+=head2 bottom_border.
+
+Boolean. Currently the attribute of he leftmost cell is used.
+
+=head2 top_border.
+
+Boolean. Currently the attribute of he leftmost cell is used.
+
 
 
 =head1 SEE ALSO
