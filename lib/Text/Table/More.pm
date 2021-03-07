@@ -319,10 +319,11 @@ sub generate_table {
                         $exptable_bottom_borders->[0] = 1
                     } else {
                         my $val;
-                        $val = _get_attr('bottom_border', $rownum+$ir-1, 0, $cell, \%args); do { $exptable_bottom_borders->[$rownum+$ir-1] = $val if $; next ROW }
-                        $val = _get_attr('top_border'   , $rownum+$ir-1, 0, $cell, \%args); do { $exptable_bottom_borders->[$rownum+$ir-2] = $val; next ROW }
-                        $val = _get_attr('bottom_border', $rownum+$ir-1, undef, undef, \%args); do { $exptable_bottom_borders->[$rownum+$ir-1] = $val; next ROW } if $val;
-                        $val = _get_attr('top_border'   , $rownum+$ir-1, undef, undef, \%args); do { $exptable_bottom_borders->[$rownum+$ir-2] = $val; next ROW } if $val;
+                        $val = _get_attr('bottom_border', $rownum+$ir-1, 0, $cell, \%args);     $exptable_bottom_borders->[$rownum+$ir-1] = $val if $val;
+                        $val = _get_attr('top_border'   , $rownum+$ir-1, 0, $cell, \%args);     $exptable_bottom_borders->[$rownum+$ir-2] = $val if $val;
+                        $val = _get_attr('bottom_border', $rownum+$ir-1, undef, undef, \%args); $exptable_bottom_borders->[$rownum+$ir-1] = $val if $val;
+                        $val = _get_attr('top_border'   , $rownum+$ir-1, undef, undef, \%args); $exptable_bottom_borders->[$rownum+$ir-2] = $val if $val;
+                    }
 
                     $M = $rownum+$ir if $M < $rownum+$ir;
                 }
