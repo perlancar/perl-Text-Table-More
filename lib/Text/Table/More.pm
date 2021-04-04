@@ -11,6 +11,10 @@ use warnings;
 #use utf8;
 
 our %FEATURES = (
+    set_v => {
+        TextTable => 1,
+    },
+
     features => {
         TextTable => {
             can_align_cell_containing_wide_character => 1,
