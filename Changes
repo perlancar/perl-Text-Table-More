@@ -2,7 +2,7 @@
 
         - No functional changes.
 
-	- [build] Rebuild with updated Pod::Weaver plugin [ModuleFeatures] to
+	- [build] Rebuild with updated Pod::Weaver plugin [-Module::Features] to
           fix the generated POD.
 
 
