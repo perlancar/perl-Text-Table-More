@@ -1,3 +1,8 @@
+0.015   2021-08-07  Released-By: PERLANCAR; Urgency: medium
+
+	- Force prereq version: BorderStyleBase 0.009 (GH#3).
+
+
 0.014   2021-04-04  Released-By: PERLANCAR; Urgency: low
 
         - No functional changes.
