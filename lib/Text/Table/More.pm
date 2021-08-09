@@ -10,6 +10,7 @@ use strict;
 use warnings;
 #use utf8;
 
+# see Module::Features for more details on this
 our %FEATURES = (
     set_v => {
         TextTable => 1,
