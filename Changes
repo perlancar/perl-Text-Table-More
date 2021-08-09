@@ -1,3 +1,10 @@
+0.016   2021-08-09  Released-By: PERLANCAR; Urgency: medium
+
+        - No functional changes.
+
+        - [build] Rebuild to fix Declared Features POD section.
+
+
 0.015   2021-08-07  Released-By: PERLANCAR; Urgency: medium
 
 	- Force prereq version: BorderStyleBase 0.009 (GH#3).
