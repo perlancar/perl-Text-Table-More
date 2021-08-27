@@ -659,7 +659,7 @@ Arguments:
 
 Array of arrayrefs (of strings or hashrefs). Required. Each array element is a
 row of cells. A cell can be a string like C<"foo"> specifying only the text
-(equivalent to C<<{ text=>"foo" >>) or a hashref which allows you to specify a
+(equivalent to C<< text=>"foo" >>) or a hashref which allows you to specify a
 cell's text (C<text>) as well as attributes like C<rowspan> (int, >= 1),
 C<colspan> (int, >= 1), etc. See L</PER-CELL ATTRIBUTES> for the list of known
 per-cell attributes.
