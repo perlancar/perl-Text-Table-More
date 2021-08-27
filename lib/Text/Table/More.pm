@@ -1,14 +1,14 @@
 package Text::Table::More;
 
-# AUTHORITY
-# DATE
-# DIST
-# VERSION
-
 use 5.010001;
 use strict;
 use warnings;
 #use utf8;
+
+# AUTHORITY
+# DATE
+# DIST
+# VERSION
 
 # see Module::Features for more details on this
 our %FEATURES = (
