@@ -286,6 +286,13 @@ sub generate_table {
         for my $row (@$rows) {
             $rownum++;
             my $colnum = -1;
+            my $border_type = do {
+                my $cmp = ($args{header_row}//0)-1 <=> $rownum;
+                # 0=none, 2=separator between header/data, 4=separator between
+                # data rows, 8=separator between header rows. this is from
+                # BorderStyle standard.
+                $cmp==0 ? 2 : $cmp==1 ? 4 : 8;
+            };
             $exptable->[$rownum] //= [];
             push @{ $exptable->[$rownum] }, undef
                 if (@{ $exptable->[$rownum] } == 0 ||
@@ -294,7 +301,7 @@ sub generate_table {
             my $exptable_colnum = firstidx {!defined} @{ $exptable->[$rownum] };
             #say "D:rownum=$rownum, exptable_colnum=$exptable_colnum";
             if ($exptable_colnum == -1) { $exptable_colnum = 0 }
-            $exptable_bottom_borders->[$rownum] //= $args{separate_rows} ? 1:0;
+            $exptable_bottom_borders->[$rownum] //= $args{separate_rows} ? $border_type : 0;
 
             for my $cell (@$row) {
                 $colnum++;
@@ -339,13 +346,13 @@ sub generate_table {
 
                     # determine whether we should draw bottom border of each row
                     if ($rownum+$ir-1 == 0 && $args{header_row}) {
-                        $exptable_bottom_borders->[0] = 1
+                        $exptable_bottom_borders->[0] = $border_type;
                     } else {
                         my $val;
-                        $val = _get_attr('bottom_border', $rownum+$ir-1, 0, $cell, \%args);     $exptable_bottom_borders->[$rownum+$ir-1] = $val if $val;
-                        $val = _get_attr('top_border'   , $rownum+$ir-1, 0, $cell, \%args);     $exptable_bottom_borders->[$rownum+$ir-2] = $val if $val;
-                        $val = _get_attr('bottom_border', $rownum+$ir-1, undef, undef, \%args); $exptable_bottom_borders->[$rownum+$ir-1] = $val if $val;
-                        $val = _get_attr('top_border'   , $rownum+$ir-1, undef, undef, \%args); $exptable_bottom_borders->[$rownum+$ir-2] = $val if $val;
+                        $val = _get_attr('bottom_border', $rownum+$ir-1, 0, $cell, \%args);     $exptable_bottom_borders->[$rownum+$ir-1] = $border_type if $val;
+                        $val = _get_attr('top_border'   , $rownum+$ir-1, 0, $cell, \%args);     $exptable_bottom_borders->[$rownum+$ir-2] = $border_type if $val;
+                        $val = _get_attr('bottom_border', $rownum+$ir-1, undef, undef, \%args); $exptable_bottom_borders->[$rownum+$ir-1] = $border_type if $val;
+                        $val = _get_attr('top_border'   , $rownum+$ir-1, undef, undef, \%args); $exptable_bottom_borders->[$rownum+$ir-2] = $border_type if $val;
                     }
 
                     $M = $rownum+$ir if $M < $rownum+$ir;
