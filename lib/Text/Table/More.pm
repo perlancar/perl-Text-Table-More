@@ -286,12 +286,12 @@ sub generate_table {
         for my $row (@$rows) {
             $rownum++;
             my $colnum = -1;
-            my $border_type = do {
+            my $separator_type = do {
                 my $cmp = ($args{header_row}//0)-1 <=> $rownum;
                 # 0=none, 2=separator between header/data, 4=separator between
                 # data rows, 8=separator between header rows. this is from
                 # BorderStyle standard.
-                $cmp==0 ? 2 : $cmp==1 ? 4 : 8;
+                $cmp==0 ? 2 : $cmp==1 ? 8 : 4;
             };
             $exptable->[$rownum] //= [];
             push @{ $exptable->[$rownum] }, undef
@@ -301,7 +301,7 @@ sub generate_table {
             my $exptable_colnum = firstidx {!defined} @{ $exptable->[$rownum] };
             #say "D:rownum=$rownum, exptable_colnum=$exptable_colnum";
             if ($exptable_colnum == -1) { $exptable_colnum = 0 }
-            $exptable_bottom_borders->[$rownum] //= $args{separate_rows} ? $border_type : 0;
+            $exptable_bottom_borders->[$rownum] //= $args{separate_rows} ? $separator_type : 0;
 
             for my $cell (@$row) {
                 $colnum++;
@@ -345,14 +345,14 @@ sub generate_table {
                     }
 
                     # determine whether we should draw bottom border of each row
-                    if ($rownum+$ir-1 == 0 && $args{header_row}) {
-                        $exptable_bottom_borders->[0] = $border_type;
+                    if ($rownum+$ir-1 == 0 && ($args{header_row}//0) > 0) {
+                        $exptable_bottom_borders->[0] = $separator_type;
                     } else {
                         my $val;
-                        $val = _get_attr('bottom_border', $rownum+$ir-1, 0, $cell, \%args);     $exptable_bottom_borders->[$rownum+$ir-1] = $border_type if $val;
-                        $val = _get_attr('top_border'   , $rownum+$ir-1, 0, $cell, \%args);     $exptable_bottom_borders->[$rownum+$ir-2] = $border_type if $val;
-                        $val = _get_attr('bottom_border', $rownum+$ir-1, undef, undef, \%args); $exptable_bottom_borders->[$rownum+$ir-1] = $border_type if $val;
-                        $val = _get_attr('top_border'   , $rownum+$ir-1, undef, undef, \%args); $exptable_bottom_borders->[$rownum+$ir-2] = $border_type if $val;
+                        $val = _get_attr('bottom_border', $rownum+$ir-1, 0, $cell, \%args);     $exptable_bottom_borders->[$rownum+$ir-1] = $separator_type if $val;
+                        $val = _get_attr('top_border'   , $rownum+$ir-1, 0, $cell, \%args);     $exptable_bottom_borders->[$rownum+$ir-2] = $separator_type if $val;
+                        $val = _get_attr('bottom_border', $rownum+$ir-1, undef, undef, \%args); $exptable_bottom_borders->[$rownum+$ir-1] = $separator_type if $val;
+                        $val = _get_attr('top_border'   , $rownum+$ir-1, undef, undef, \%args); $exptable_bottom_borders->[$rownum+$ir-2] = $separator_type if $val;
                     }
 
                     $M = $rownum+$ir if $M < $rownum+$ir;
@@ -396,7 +396,7 @@ sub generate_table {
     } # CONSTRUCT_EXPTABLE
     #use DDC; dd $exptable; # debug
     #print "D: exptable size: $M x $N (HxW)\n"; # debug
-    #use DDC; print "bottom borders: "; dd $exptable_bottom_borders; # debug
+    use DDC; print "bottom borders: "; dd $exptable_bottom_borders; # debug
 
   OPTIMIZE_EXPTABLE: {
         # TODO
@@ -452,7 +452,7 @@ sub generate_table {
           DRAW_TOP_BORDER:
             {
                 last unless $ir == 0;
-                my $b_y = $args{header_row} ? 0 : 6;
+                my $b_y = ($args{header_row}//0) > 0 ? 0 : 6;
                 my $b_topleft    = $bs_obj->get_border_char($b_y, 0);
                 my $b_topline    = $bs_obj->get_border_char($b_y, 1);
                 my $b_topbetwcol = $bs_obj->get_border_char($b_y, 2);
@@ -511,7 +511,7 @@ sub generate_table {
             {
                 last unless $ir < $M-1;
                 last unless $exptable_bottom_borders->[$ir];
-                my $b_y = $ir == 0 && $args{header_row} ? 2 : 4;
+                my $b_y = $exptable_bottom_borders->[$ir];
                 my $b_betwrowleft    = $bs_obj->get_border_char($b_y, 0);
                 my $b_betwrowline    = $bs_obj->get_border_char($b_y, 1);
                 my $b_betwrowbetwcol = $bs_obj->get_border_char($b_y, 2);
@@ -521,10 +521,10 @@ sub generate_table {
                 my $b_betwrowbetwcol_nobot = $bs_obj->get_border_char($b_y, 5);
                 my $b_betwrowbetwcol_noleft  = $bs_obj->get_border_char($b_y, 6);
                 my $b_betwrowbetwcol_noright = $bs_obj->get_border_char($b_y, 7);
-                my $b_yd = $ir == 0 && $args{header_row} ? 2 : 3;
-                my $b_datarowleft    = $bs_obj->get_border_char($b_yd, 0, 1);
-                my $b_datarowbetwcol = $bs_obj->get_border_char($b_yd, 1, 1);
-                my $b_datarowright   = $bs_obj->get_border_char($b_yd, 2, 1);
+                my $b_ydataorheader = $args{header_row} == $ir+1 ? 2 : $args{header_row} < $ir+1 ? 3 : 1;
+                my $b_dataorheaderrowleft    = $bs_obj->get_border_char($b_ydataorheader, 0, 1);
+                my $b_dataorheaderrowbetwcol = $bs_obj->get_border_char($b_ydataorheader, 1, 1);
+                my $b_dataorheaderrowright   = $bs_obj->get_border_char($b_ydataorheader, 2, 1);
                 for my $ic (0..$N-1) {
                     my $cell_right       = $ic < $N-1 ? $exptable->[$ir][$ic+1] : undef;
                     my $cell_bottom      = $ir < $M-1 ? $exptable->[$ir+1][$ic] : undef;
@@ -532,7 +532,7 @@ sub generate_table {
 
                     # leftmost border
                     if ($ic == 0) {
-                        $buf[$y][0] = _exptable_cell_is_rowspan_tail($cell_bottom) ? $b_datarowleft : $b_betwrowleft;
+                        $buf[$y][0] = _exptable_cell_is_rowspan_tail($cell_bottom) ? $b_dataorheaderrowleft : $b_betwrowleft;
                     }
 
                     # along the width of cell content
@@ -544,7 +544,7 @@ sub generate_table {
                     if ($ic == $N-1) {
                         # rightmost
                         if (_exptable_cell_is_rowspan_tail($cell_bottom)) {
-                            $char = $b_datarowright;
+                            $char = $b_dataorheaderrowright;
                         } else {
                             $char = $b_betwrowright;
                         }
@@ -566,7 +566,7 @@ sub generate_table {
                             } else {
                                 if (_exptable_cell_is_rowspan_tail($cell_bottom)) {
                                     if (_exptable_cell_is_rowspan_tail($cell_rightbottom)) {
-                                        $char = $b_datarowbetwcol;
+                                        $char = $b_dataorheaderrowbetwcol;
                                     } else {
                                         $char = $b_betwrowbetwcol_noleft;
                                     }
