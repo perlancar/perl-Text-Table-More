@@ -396,7 +396,7 @@ sub generate_table {
     } # CONSTRUCT_EXPTABLE
     #use DDC; dd $exptable; # debug
     #print "D: exptable size: $M x $N (HxW)\n"; # debug
-    use DDC; print "bottom borders: "; dd $exptable_bottom_borders; # debug
+    #use DDC; print "bottom borders: "; dd $exptable_bottom_borders; # debug
 
   OPTIMIZE_EXPTABLE: {
         # TODO
