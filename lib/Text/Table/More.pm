@@ -682,8 +682,9 @@ argument.
 
 =item * header_row
 
-Boolean. Optional. Default 0. Whether to treat the first row as the header row,
-which means draw a separator line between it and the rest.
+Int. Optional. Default 0. Number of rows that are header. Note that in
+Text::Table::Tiny, this option is a boolean. We use integer to support multirow
+header.
 
 =item * border_style
 
@@ -817,40 +818,10 @@ Boolean. Currently the attribute of he leftmost cell is used.
 
 =head1 FAQ
 
-=head2 What about multirow header (with colspans/rowspans in it)?
+=head2 Can I have multiple header rows?
 
-The C<Text::Table::Tiny> interface that we adopted (using a boolean
-C<header_row> to signify the first row is a header) was only meant for a
-single-row header. But header rows are basically just regular rows. You can use
-C<bottom_border> row attribute to draw a separator line after your last header
-row, example:
-
- print generate_table(
-     rows => [
-         # header
-         [{text=>'header1', rowspan=>2}, {text=>'header2',colspan=>2}],
-         ['header2a', 'header2b'],
-
-         # data
-         [1,2,3],
-         [5,6,7],
-     ],
-     row_attrs => [
-       [0, {align=>"middle", valign=>"middle", bottom_border=>1}],
-       [1, {align=>"middle", valign=>"middle", bottom_border=>1}],
-     ],
- );
-
-will print something like:
-
- .---------+---------------------.
- |         |       header2       |
- | header1 +==========+==========+
- |         | header2a | header2b |
- +=========+==========+==========+
- | 1       | 2        | 3        |
- | 5       | 6        | 7        |
- `---------+----------+----------'
+Yes, by setting L</header_row> option to 2 or whatever number of header rows you
+have. See example script F<multirow-header.pl> in this distribution.
 
 
 =head1 SEE ALSO
