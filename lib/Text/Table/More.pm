@@ -218,7 +218,10 @@ sub generate_table {
 
     my %args = @_;
     my $rows = $args{rows} or die "Please specify rows";
-    my $bs_name = $args{border_style} // 'ASCII::SingleLineDoubleAfterHeader';
+    my $bs_name = $args{border_style} //
+        $ENV{PERL_TEXT_TABLE_MORE_BORDER_STYLE} //
+        $ENV{BORDER_STYLE} //
+        'ASCII::SingleLineDoubleAfterHeader';
     my $cell_attrs = $args{cell_attrs} // [];
 
     my $bs_obj = Module::Load::Util::instantiate_class_with_optional_args({ns_prefix=>"BorderStyle"}, $bs_name);
@@ -688,9 +691,11 @@ header.
 
 =item * border_style
 
-Str. Optional. Default to C<ASCII::SingleLineDoubleAfterHeader>. This is Perl
-module under the L<BorderStyle> namespace, without the namespace prefix. To see
-how a border style looks like, you can use the CLI L<show-border-style> from
+Str. Optional. Uses default from the environment variable
+L</PERL_TEXT_TABLE_MORE_BORDER_STYLE>, or environment variable L</BORDER_STYLE>,
+or C<ASCII::SingleLineDoubleAfterHeader>. This is Perl module under the
+L<BorderStyle> namespace, without the namespace prefix. To see how a border
+style looks like, you can use the CLI L<show-border-style> from
 L<App::BorderStyleUtils>.
 
 =item * align
@@ -814,6 +819,19 @@ Boolean. Currently the attribute of he leftmost cell is used.
 =head2 top_border.
 
 Boolean. Currently the attribute of he leftmost cell is used.
+
+
+=head1 ENVIRONMENT
+
+=head2 PERL_TEXT_TABLE_MORE_BORDER_STYLE
+
+String. Used to set the default for the L</border_style> option. Has higher
+precedence than L</BORDER_STYLE>.
+
+=head2 BORDER_STYLE
+
+String. Used to set the default for the L</border_style> option. Has lower
+precedence than L</PERL_TEXT_TABLE_MORE_BORDER_STYLE>.
 
 
 =head1 FAQ

@@ -20,7 +20,5 @@ print generate_table(
         [1, {align=>"middle", valign=>"middle", bottom_border=>1}],
     ],
     header_row => 1,
-    #border_style => "UTF8::SingleLineDoubleAfterHeader",
-    #border_style => "Test::Labeled",
     separate_rows => 1,
 );
