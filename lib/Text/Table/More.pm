@@ -217,6 +217,7 @@ sub generate_table {
     require Text::NonWideChar::Util;
 
     my %args = @_;
+    my $header_row = $args{header_row} // 0;
     my $rows = $args{rows} or die "Please specify rows";
     my $bs_name = $args{border_style} //
         $ENV{PERL_TEXT_TABLE_MORE_BORDER_STYLE} //
@@ -290,7 +291,7 @@ sub generate_table {
             $rownum++;
             my $colnum = -1;
             my $separator_type = do {
-                my $cmp = ($args{header_row}//0)-1 <=> $rownum;
+                my $cmp = $header_row-1 <=> $rownum;
                 # 0=none, 2=separator between header/data, 4=separator between
                 # data rows, 8=separator between header rows. this is from
                 # BorderStyle standard.
@@ -348,7 +349,7 @@ sub generate_table {
                     }
 
                     # determine whether we should draw bottom border of each row
-                    if ($rownum+$ir-1 == 0 && ($args{header_row}//0) > 0) {
+                    if ($rownum+$ir-1 == 0 && $header_row > 0) {
                         $exptable_bottom_borders->[0] = $separator_type;
                     } else {
                         my $val;
@@ -455,7 +456,7 @@ sub generate_table {
           DRAW_TOP_BORDER:
             {
                 last unless $ir == 0;
-                my $b_y = ($args{header_row}//0) > 0 ? 0 : 6;
+                my $b_y = $header_row > 0 ? 0 : 6;
                 my $b_topleft    = $bs_obj->get_border_char($b_y, 0);
                 my $b_topline    = $bs_obj->get_border_char($b_y, 1);
                 my $b_topbetwcol = $bs_obj->get_border_char($b_y, 2);
@@ -474,7 +475,7 @@ sub generate_table {
             # DRAW_DATA_OR_HEADER_ROW
             {
                 # draw leftmost border, which we always do.
-                my $b_y = $ir == 0 && $args{header_row} ? 1 : 3;
+                my $b_y = $ir == 0 && $header_row ? 1 : 3;
                 for my $i (1 .. $exptable_row_heights->[$ir]) {
                     $buf[$y+$i-1][0] = $bs_obj->get_border_char($b_y, 0);
                 }
@@ -500,7 +501,7 @@ sub generate_table {
 
                     # draw rightmost border, which we always do.
                     if ($ic == $N-1) {
-                        my $b_y = $ir == 0 && $args{header_row} ? 1 : 3;
+                        my $b_y = $ir == 0 && $header_row ? 1 : 3;
                         for my $i (1 .. $exptable_row_heights->[$ir]) {
                             $buf[$y+$i-1][$ic*4+4] = $bs_obj->get_border_char($b_y, 2);
                         }
@@ -524,7 +525,7 @@ sub generate_table {
                 my $b_betwrowbetwcol_nobot = $bs_obj->get_border_char($b_y, 5);
                 my $b_betwrowbetwcol_noleft  = $bs_obj->get_border_char($b_y, 6);
                 my $b_betwrowbetwcol_noright = $bs_obj->get_border_char($b_y, 7);
-                my $b_ydataorheader = $args{header_row} == $ir+1 ? 2 : $args{header_row} < $ir+1 ? 3 : 1;
+                my $b_ydataorheader = $header_row == $ir+1 ? 2 : $header_row < $ir+1 ? 3 : 1;
                 my $b_dataorheaderrowleft    = $bs_obj->get_border_char($b_ydataorheader, 0, 1);
                 my $b_dataorheaderrowbetwcol = $bs_obj->get_border_char($b_ydataorheader, 1, 1);
                 my $b_dataorheaderrowright   = $bs_obj->get_border_char($b_ydataorheader, 2, 1);
@@ -590,7 +591,7 @@ sub generate_table {
           DRAW_BOTTOM_BORDER:
             {
                 last unless $ir == $M-1;
-                my $b_y = $ir == 0 && $args{header_row} ? 7 : 5;
+                my $b_y = $ir == 0 && $header_row ? 7 : 5;
                 my $b_botleft    = $bs_obj->get_border_char($b_y, 0);
                 my $b_botline    = $bs_obj->get_border_char($b_y, 1);
                 my $b_botbetwcol = $bs_obj->get_border_char($b_y, 2);
