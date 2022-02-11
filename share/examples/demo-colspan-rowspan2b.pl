@@ -8,7 +8,7 @@ use Text::Table::More qw/generate_table/;
 
 my %table1 = (
     rows => [
-        [{text=>".....\n.....\n.....\n.....\n.....", colspan=>2, rowspan=>3}, {text=>','}, {text=>'.'}],
+        [{text=>".....\n.....\n.....\n.....\n.....", colspan=>2, rowspan=>3}, {text=>'.'}, {text=>'.'}],
         [{text=>'.'}, {text=>'.'}],
         [{text=>".....\n.....\n.....", colspan=>2, rowspan=>2}],
         [{text=>'.',tpad=>2}, {text=>'.'}],
