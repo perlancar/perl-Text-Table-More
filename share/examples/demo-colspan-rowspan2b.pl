@@ -16,11 +16,13 @@ my %table1 = (
     separate_rows => 1,
     align => 'middle',
     valign => 'middle',
-    lpad => 0,
-    rpad => 0,
-    tpad=>0,
-    bpad=>0,
+    lpad => 1,
+    rpad => 2,
+    #tpad=>0,
+    #bpad=>0,
     #pad_char=>'x',
+
+    header_row=>2,
 );
 
 binmode(STDOUT, ":utf8");
