@@ -4,7 +4,7 @@ use 5.010001;
 use strict;
 use utf8;
 use warnings;
-use Test::Differences;
+#use Test::Differences;
 use Test::More 0.98;
 #use Test::Needs;
 

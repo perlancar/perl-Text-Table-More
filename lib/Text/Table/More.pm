@@ -874,8 +874,12 @@ Integer.
 
 Integer.
 
+=back
+
 
 =head1 PER-COLUMN ATTRIBUTES
+
+=over
 
 =item * align
 
@@ -913,8 +917,12 @@ Integer.
 
 Integer.
 
+=back
+
 
 =head1 PER-CELL ATTRIBUTES
+
+=over
 
 =item * align
 
@@ -970,6 +978,8 @@ Integer.
 =item * pad_char
 
 String.
+
+=back
 
 
 =head1 ENVIRONMENT
