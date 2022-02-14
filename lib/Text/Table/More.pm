@@ -477,11 +477,15 @@ sub generate_table {
         my $y = 0;
 
         for my $ir (0..$M-1) {
+
+            my %gbcargs = (
+                $header_row  >= $ir+1 ? (for_header_row=>1) :
+                (for_data_row=>1),
+            );
+
           DRAW_TOP_BORDER:
             {
                 last unless $ir == 0;
-                my $row_is_header = $header_row > $exptable->[$ir][0][IDX_EXPTABLE_CELL_ORIG_ROWNUM];
-                my %gbcargs = (for_header_row=>$row_is_header ? 1:0);
                 my $b_topleft    = $bs_obj->get_border_char(char=>'rd_t', %gbcargs);
                 my $b_topline    = $bs_obj->get_border_char(char=>'h_t', %gbcargs);
                 my $b_topbetwcol = $bs_obj->get_border_char(char=>'hd_t', %gbcargs);
@@ -497,22 +501,16 @@ sub generate_table {
                 $y++;
             } # DRAW_TOP_BORDER
 
-            # DRAW_DATA_OR_HEADER_ROW
+          DRAW_DATA_OR_HEADER_ROW:
             {
                 # draw leftmost border, which we always do.
                 for my $i (1 .. $exptable_row_heights->[$ir]) {
-                    my $row_is_header = $header_row > $exptable->[$ir][0][IDX_EXPTABLE_CELL_ORIG_ROWNUM];
-                    my %gbcargs = (for_header_row=>$row_is_header ? 1:0);
                     $buf[$y+$i-1][0] = $bs_obj->get_border_char(char=>'v_l', %gbcargs);
                 }
 
                 my $lines;
                 for my $ic (0..$N-1) {
                     my $cell = $exptable->[$ir][$ic];
-
-                    my $row_is_header = $header_row > $cell->[IDX_EXPTABLE_CELL_ORIG_ROWNUM];
-                    my %gbcargs = (for_header_row=>$row_is_header ? 1:0);
-
                     # draw cell content. also possibly draw border between
                     # cells. we don't draw border inside a row/colspan.
                     if (_exptable_cell_is_head($cell)) {
@@ -539,18 +537,11 @@ sub generate_table {
             } # DRAW_DATA_OR_HEADER_ROW
             $y += $exptable_row_heights->[$ir];
 
+            $gbcargs{for_header_data_separator} = 1 if $header_row == $ir+1;
           DRAW_ROW_SEPARATOR:
             {
                 last unless $ir < $M-1;
                 last unless $exptable_bottom_borders->[$ir];
-
-                my $_rownum = $exptable->[$ir][0][IDX_EXPTABLE_CELL_ORIG_ROWNUM];
-                my %gbcargs;
-                if ($_rownum == $header_row-1) {
-                    $gbcargs{for_header_data_separator} = 1;
-                } elsif ($_rownum < $header_row-1) {
-                    $gbcargs{for_header_row} = 1;
-                }
 
                 my $b_betwrowleft    = $bs_obj->get_border_char(char=>'rv_l', %gbcargs);
                 my $b_betwrowline    = $bs_obj->get_border_char(char=>'v_i', %gbcargs);
@@ -622,21 +613,20 @@ sub generate_table {
                 }
                 $y++;
             } # DRAW_ROW_SEPARATOR
+            delete $gbcargs{for_header_data_separator};
 
           DRAW_BOTTOM_BORDER:
             {
                 last unless $ir == $M-1;
-                my $row_is_header = $header_row > $exptable->[$ir][0][IDX_EXPTABLE_CELL_ORIG_ROWNUM];
-                my %gbcargs = (for_header_row=>$row_is_header ? 1:0);
-                my $b_botleft    = $bs_obj->get_border_char(char=>'ru_b');
-                my $b_botline    = $bs_obj->get_border_char(char=>'h_b');
-                my $b_botbetwcol = $bs_obj->get_border_char(char=>'hu_b');
-                my $b_botright   = $bs_obj->get_border_char(char=>'lu_b');
+                my $b_botleft    = $bs_obj->get_border_char(char=>'ru_b', %gbcargs);
+                my $b_botline    = $bs_obj->get_border_char(char=>'h_b', %gbcargs);
+                my $b_botbetwcol = $bs_obj->get_border_char(char=>'hu_b', %gbcargs);
+                my $b_botright   = $bs_obj->get_border_char(char=>'lu_b', %gbcargs);
                 last unless length $b_botleft || length $b_botline || length $b_botbetwcol || length $b_botright;
                 $buf[$y][0] = $b_botleft;
                 for my $ic (0..$N-1) {
                     my $cell_right = $ic < $N-1 ? $exptable->[$ir][$ic+1] : undef;
-                    $buf[$y][$ic*4+2] = $bs_obj->get_border_char(char=>'h_b', repeat=>$exptable_column_widths->[$ic]);
+                    $buf[$y][$ic*4+2] = $bs_obj->get_border_char(char=>'h_b', repeat=>$exptable_column_widths->[$ic], %gbcargs);
                     $buf[$y][$ic*4+4] = $ic == $N-1 ? $b_botright : (_exptable_cell_is_colspan_tail($cell_right) ? $b_botline : $b_botbetwcol);
                 }
                 $y++;
