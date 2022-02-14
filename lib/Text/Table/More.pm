@@ -396,8 +396,8 @@ sub generate_table {
                 my $tpad = _get_attr('tpad', $exptable_rownum, $exptable_colnum, $cell, \%args) // $vpad;
                 my $bpad = _get_attr('bpad', $exptable_rownum, $exptable_colnum, $cell, \%args) // $vpad;
                 my $pad_char = $args{pad_char};
-                if ($lpad > 0) { my $p = "L" x $lpad; $text =~ s/^/$p/gm }
-                if ($rpad > 0) { my $p = "R" x $rpad; $text =~ s/$/$p/gm }
+                if ($lpad > 0) { my $p = $pad_char x $lpad; $text =~ s/^/$p/gm }
+                if ($rpad > 0) { my $p = $pad_char x $rpad; $text =~ s/$/$p/gm }
                 if ($tpad > 0) { $text = ("\n" x $tpad) . $text }
                 if ($bpad > 0) { $text = $text . ("\n$pad_char" x $bpad) }
                 $exptable_cell->[IDX_EXPTABLE_CELL_TEXT] = $text;
@@ -405,12 +405,13 @@ sub generate_table {
                 my $lh = $_length_height_func->($text);
                 #use DDC; dd $text;
                 #use DDC; say "D:length_height[$exptable_rownum,$exptable_colnum] = (".DDC::dump($text)."): ".DDC::dump($lh);
-                $lh->[0] += ($lpad + $rpad);
                 my $tot_intercol_widths = ($colspan-1) * $intercol_width;
                 my $tot_interrow_heights = 0; for (1..$rowspan-1) { $tot_interrow_heights++ if $exptable_bottom_borders->[$exptable_rownum+$_-1] }
-                #say "D:interrow_heights=$tot_interrow_heights";
+                #say "D:tot_intercol_widths=$tot_intercol_widths";
+                #say "D:to_interrow_heights=$tot_interrow_heights";
                 my @heights = _divide_int_to_n_ints(max(0, $lh->[1] - $tot_interrow_heights), $rowspan);
                 my @widths  = _divide_int_to_n_ints(max(0, $lh->[0] - $tot_intercol_widths ), $colspan);
+                #use DDC; say "D:split widths:", DDC::dump(\@widths), ", split heights:", DDC::dump(\@heights);
                 for my $ir (1..$rowspan) {
                     for my $ic (1..$colspan) {
                         $exptable->[$exptable_rownum+$ir-1][$exptable_colnum+$ic-1][IDX_EXPTABLE_CELL_HEIGHT]  = $heights[$ir-1];
