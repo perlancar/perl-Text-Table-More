@@ -676,9 +676,12 @@ then the output will be something like:
 
 =head1 DESCRIPTION
 
-This module uses the simple interface of L<Text::Table::Tiny> (0.04) with
-support for more formatting options like column/row spans, border style,
-per-row/column/cell align/valign.
+Text::Table::More is yet another text table rendering module. This module uses
+the simple interface of L<Text::Table::Tiny> with support for more formatting
+options like column/row spans, border style, per-row/column/cell
+align/valign/pad/vpad/hpad, and so on. At the time of this writing,
+Text::Table::More is the only text table module on CPAN that supports
+rowspans/colspans.
 
 Keywords: rowspan, colspan.
 
