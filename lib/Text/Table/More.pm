@@ -681,7 +681,8 @@ the simple interface of L<Text::Table::Tiny> with support for more formatting
 options like column/row spans, border style, per-row/column/cell
 align/valign/pad/vpad/hpad, and so on. At the time of this writing,
 Text::Table::More is the only text table module on CPAN that supports
-rowspans/colspans.
+rowspans/colspans; in fact, rowspans/colspans feature is the original
+motivation for writing this module.
 
 Keywords: rowspan, colspan.
 
