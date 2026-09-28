@@ -544,7 +544,7 @@ sub generate_table {
                 last unless $exptable_bottom_borders->[$ir];
 
                 my $b_betwrowleft    = $bs_obj->get_border_char(char=>'rv_l', %gbcargs);
-                my $b_betwrowline    = $bs_obj->get_border_char(char=>'v_i', %gbcargs);
+                my $b_betwrowline    = $bs_obj->get_border_char(char=>'h_i', %gbcargs);
                 my $b_betwrowbetwcol = $bs_obj->get_border_char(char=>'hv_i', %gbcargs);
                 my $b_betwrowright   = $bs_obj->get_border_char(char=>'lv_r', %gbcargs);
                 last unless length $b_betwrowleft || length $b_betwrowline || length $b_betwrowbetwcol || length $b_betwrowright;

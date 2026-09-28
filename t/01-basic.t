@@ -212,6 +212,25 @@ _
     },
 
     {
+        name => 'stacked colspans',
+        rows => [
+            [{text=>"AB0",colspan=>2}],
+            [{text=>"AB1",colspan=>2}],
+            ["A2", "B2"],
+        ],
+        args => {separate_rows=>1},
+        result => <<'_',
+.---------.
+| AB0     |
++---------+
+| AB1     |
++----+----+
+| A2 | B2 |
+`----+----'
+_
+    },
+
+    {
         name => 'rowcolspan 1',
         rows => [
             ["A0","B0","C0"],
